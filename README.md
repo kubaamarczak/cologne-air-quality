@@ -1,5 +1,6 @@
 # Air Quality in Cologne: Modelling NO₂ with GAMs
 
+[![CI](https://github.com/kubaamarczak/cologne-air-quality/actions/workflows/ci.yml/badge.svg)](https://github.com/kubaamarczak/cologne-air-quality/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.9-3776AB?logo=python&logoColor=white)
 ![R](https://img.shields.io/badge/R-276DC3?logo=r&logoColor=white)
 ![pandas](https://img.shields.io/badge/pandas-150458?logo=pandas&logoColor=white)
