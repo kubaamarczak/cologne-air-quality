@@ -71,7 +71,7 @@ The model was built up step by step, starting from a single smooth term for the 
 Model without autocorrelation correction:
 
 ```r
-value ~ type_day + s(hour, by = type_day, bs = "cc",  k = 24) + s(month, bs = "cc", k = 12) + s(time_index, k = 20)
+value ~ type_day + s(hour, by = type_day, bs = "cc", k = 24) + s(month, bs = "cc", k = 12) + s(time_index, k = 20)
 ```
 
 Design choices:
@@ -96,7 +96,7 @@ Design choices:
 Final model:
 
 ```r
-bam(value ~ type_day + s(hour, by = type_day,        bs = "cc", k = 24) + s(month, bs = "cc", k = 12) + s(time_index, k = 20), family = tw(link = "log"), method = "fREML", rho = 0.9, AR.start = ar_start, discrete = TRUE, knots = list(hour = c(0, 24),    month = c(0.5, 12.5)))
+bam(value ~ type_day + s(hour, by = type_day, bs = "cc", k = 24) + s(month, bs = "cc", k = 12) + s(time_index, k = 20), family = tw(link = "log"), method = "fREML", rho = 0.9, AR.start = ar_start, discrete = TRUE, knots = list(hour = c(0, 24), month = c(0.5, 12.5)))
 ```
 
 ### Results
@@ -136,7 +136,7 @@ airquality-project/
 ├── renv.lock
 ├── data/
 │   └── processed/
-│       └── cologne_measures_2016_2024.parquet        # created by 02_fetch_measures.py
+│       └── cologne_measures_2016_2024.parquet  # created by 02_fetch_measures.py
 ├── figures/
 ├── python/
 │   ├── uba_api.py              # helper functions for the UBA API
