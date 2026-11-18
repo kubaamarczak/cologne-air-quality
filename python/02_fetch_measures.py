@@ -9,25 +9,34 @@ from uba_api import get_json
 # -----------------------------------------------------------------
 
 # station ids as constants
-CW, RK, CR, TS = 1108, 1114, 1254, 1255 # chorweiler, rodenkirchen, clevischer ring, turiner straße
+CW, RK, CR, TS = (
+    1108,
+    1114,
+    1254,
+    1255,
+)  # chorweiler, rodenkirchen, clevischer ring, turiner straße
 STATIONS = [CW, RK, CR, TS]
 
-# scope 
-SCOPE_HOURLY = 2 # 1SMW
+# scope
+SCOPE_HOURLY = 2  # 1SMW
 
 # components
 PM10, NO2 = 1, 5
+
 
 # function to get data per station, component & year
 def fetch_one(station, component, year):
     # restrict with station, component & year
     params = {
-        "date_from": f"{year}-01-01", "time_from": 1,
-        "date_to": f"{year}-12-31", "time_to": 24,
-        "station": station, "component": component,
+        "date_from": f"{year}-01-01",
+        "time_from": 1,
+        "date_to": f"{year}-12-31",
+        "time_to": 24,
+        "station": station,
+        "component": component,
         "scope": SCOPE_HOURLY,
     }
-    
+
     # get measures as json
     r = get_json(endpoint="measures", params=params)
 
@@ -38,26 +47,32 @@ def fetch_one(station, component, year):
         for sta, series in r["data"].items()
         for timestmp, vals in series.items()
     ]
-    
+
     df_part = pd.DataFrame(rows)
     df_part["value"] = pd.to_numeric(df_part["value"])
     df_part["date_start"] = pd.to_datetime(df_part["date_start"])
-    df_part["date_end"] = df_part["date_start"] + pd.Timedelta(hours=1) # avoids wrong time format
-    
-    time.sleep(0.5) # less strain on api 
+    df_part["date_end"] = df_part["date_start"] + pd.Timedelta(
+        hours=1
+    )  # avoids wrong time format
+
+    time.sleep(0.5)  # less strain on api
     print(f"{station} {component} {year}")
 
     return df_part
+
 
 # function to iterate over stations, components & years and create a data frame
 def fetch_measures(stations, components, years):
     results = [fetch_one(s, c, y) for s in stations for c in components for y in years]
     return pd.concat(results, ignore_index=True)
 
-# fetch measures
-df_measures = fetch_measures(stations=STATIONS, components=[PM10, NO2], years=range(2016, 2025))
 
-# peek at the final data extraction 
+# fetch measures
+df_measures = fetch_measures(
+    stations=STATIONS, components=[PM10, NO2], years=range(2016, 2025)
+)
+
+# peek at the final data extraction
 print(df_measures)
 
 # plausibility check
